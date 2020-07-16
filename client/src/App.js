@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Route } from "react-router-dom";
-import SavedList from "./Movies/SavedList";
+import React, { useState, useEffect } from 'react';
+import { Route } from 'react-router-dom';
+import SavedList from './Movies/SavedList';
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
-import {MovieContext, MOvieContext} from './utils/MovieContext';
+import UpdateMovie from './Movies/UpdateMovie'
+import {MovieContext} from './utils/MovieContext'
 import axios from 'axios';
 
 const App = () => {
@@ -12,12 +13,12 @@ const App = () => {
 
   const getMovieList = () => {
     axios
-      .get("http://localhost:5000/api/movies")
-      .then(res => setMovieList(res.data))
-      .catch(err => console.log(err.response));
+      .get('http://localhost:5000/api/movies')
+      .then((res) => setMovieList(res.data))
+      .catch((err) => console.log(err.response));
   };
 
-  const addToSavedList = movie => {
+  const addToSavedList = (movie) => {
     setSavedList([...savedList, movie]);
   };
 
@@ -27,25 +28,23 @@ const App = () => {
 
   return (
     <>
-    <MovieContext.Provider value= {{movieList, getMovieList}} >
-      <SavedList list={savedList} />
+      <MovieContext.Provider value={{ movieList, getMovieList }}>
+        <SavedList list={savedList} />
 
-      <Route exact path="/">
-        <MovieList movies={movieList} />
-      </Route>
+        <Route exact path='/'>
+          <MovieList movies={movieList} />
+        </Route>
 
-      <Route path="/movies/:id">
-        <Movie addToSavedList={addToSavedList} />
-      </Route>
+        <Route path='/movies/:id'>
+          <Movie addToSavedList={addToSavedList} />
+        </Route>
 
-      {/* add route at path */}
-      <Route path="/update-movie/:id">
-        <UpdateMovie />
-    </Route>
-
-    </MovieContext.Provider> 
+        {/* add route at path */}
+        <Route path='/update-movie/:id'>
+          <UpdateMovie />
+        </Route>
+      </MovieContext.Provider>
     </>
-    
   );
 };
 
